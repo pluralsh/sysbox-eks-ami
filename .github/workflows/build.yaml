@@ -13,10 +13,12 @@ jobs:
     permissions:
       contents: 'read'
       id-token: 'write'
-    # strategy:
-    #   matrix:
-    #     k8s_version: ["1.23", "1.24", "1.25", "1.26"]
-    #     ubuntu_version: ["focal-20.04"]
+    strategy:
+      matrix:
+        # k8s_version: ["1.23", "1.24", "1.25", "1.26"]
+        k8s_version: ["1.23"]
+        ubuntu_version: ["focal-20.04"]
+        architecture: ["amd64", "arm64"]
     steps:
       - name: Checkout
         uses: actions/checkout@v3
@@ -31,7 +33,7 @@ jobs:
         uses: docker/setup-qemu-action@v2
       - name: Get files
         # if: github.event_name != 'pull_request'
-        run: make get-files-arm64
+        run: make get-files
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
         id: setup
@@ -43,13 +45,14 @@ jobs:
       - name: Run `packer validate`
         id: validate
         run: "packer validate ."
-      # - name: Run `packer build`
-      #   id: build
-      #   # if: github.event_name != 'pull_request'
-      #   env:
-      #     PKR_VAR_k8s_version: ${{ matrix.k8s_version }}
-      #     PKR_VAR_ubuntu_version: ${{ matrix.ubuntu_version }}
-      #   run: "packer build ."
+      - name: Run `packer build`
+        id: build
+        # if: github.event_name != 'pull_request'
+        env:
+          PKR_VAR_k8s_version: ${{ matrix.k8s_version }}
+          PKR_VAR_ubuntu_version: ${{ matrix.ubuntu_version }}
+          PKR_VAR_architecture: ${{ matrix.architecture }}
+        run: "packer build ."
   # trivy-scan:
   #   name: Trivy fs scan
   #   runs-on: ubuntu-latest

@@ -7,8 +7,6 @@ get-files:
 	mkdir -p ./tmp/crio/amd64
 	mkdir -p ./tmp/crio/arm64
 	docker run --rm --platform linux/amd64 -v ./tmp:/host registry.nestybox.com/nestybox/sysbox-deploy-k8s:${SYSBOX_VERSION} /bin/bash -c "cp /opt/sysbox/bin/generic/* /host/sysbox/amd64/bin/ && cp -r /opt/sysbox/systemd/ /host/sysbox/systemd/ && cp -r /opt/crio-deploy/bin/* /host/crio/amd64/ && cp -r /opt/crio-deploy/config/ /host/crio/config/ && cp -r /opt/crio-deploy/scripts/ /host/crio/scripts/"
-
-get-files-arm64: get-files
 	docker run --rm --platform linux/arm64 -v ./tmp:/host registry.nestybox.com/nestybox/sysbox-deploy-k8s:${SYSBOX_VERSION} /bin/bash -c "cp /opt/sysbox/bin/generic/* /host/sysbox/arm64/bin/ && cp -r /opt/crio-deploy/bin/* /host/crio/arm64/"
 
 packer-init:
