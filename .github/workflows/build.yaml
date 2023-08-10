@@ -31,7 +31,6 @@ jobs:
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v2
       - name: Get files
-        if: github.event_name != 'pull_request'
         run: make get-files
       - name: Setup `packer`
         uses: hashicorp/setup-packer@main
