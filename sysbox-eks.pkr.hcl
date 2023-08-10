@@ -1,6 +1,6 @@
 source "amazon-ebs" "ubuntu-eks" {
-  ami_name        = "${var.img_name}/sysbox-eks_${var.sysbox_version}/k8s_${var.k8s_version}/images/hvm-ssd/ubuntu-${var.ubuntu_version}-${var.architecture}-server"
-  ami_description = "Sysbox EKS Node (k8s_${var.k8s_version}), on Ubuntu ${var.ubuntu_version} (${var.architecture})"
+  ami_name        = "${var.img_name}/sysbox-eks_${var.sysbox_version}/k8s_${var.k8s_version}/ubuntu-${var.ubuntu_version}-${var.architecture}-server/${var.img_version}"
+  ami_description = "Sysbox EKS Node (k8s_${var.k8s_version}), on Ubuntu ${var.ubuntu_version} (${var.architecture}) Maintained by Plural."
 
   region        = "us-east-2"
   instance_type = local.instance_type
