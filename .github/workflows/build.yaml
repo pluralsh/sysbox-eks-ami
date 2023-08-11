@@ -38,15 +38,18 @@ jobs:
         env:
           GITHUB_TOKEN: ${{ secrets.PLURAL_BOT_PAT }}
           NODE_AUTH_TOKEN: ${{ secrets.PLURAL_BOT_NPM_TOKEN }}
-      - name: Set up QEMU
-        uses: docker/setup-qemu-action@v2
-      - name: Get files
-        run: make get-files
-      - name: Cache downloaded files
-        uses: actions/cache/save@v3
+      - name: Cache sysbox and cri-o files
+        id: sysbox_cache
+        uses: actions/cache@v3
         with:
           path: tmp
           key: ${{ runner.os }}-build-${{ env.SYSBOX_VERSION }}
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v2
+        if: steps.sysbox_cache.outputs.cache-hit != 'true'
+      - name: Get sysbox and cri-o files
+        if: steps.sysbox_cache.outputs.cache-hit != 'true'
+        run: make get-files
   packer_build_eks:
     name: Build EKS AMI
     runs-on: ubuntu-latest
