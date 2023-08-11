@@ -17,6 +17,7 @@ jobs:
       SYSBOX_VERSION: 0.6.2
     outputs:
       new_release_version: ${{ steps.semantic_release.outputs.new_release_version }}
+      new_release_published: ${{ steps.semantic_release.outputs.new_release_published }}
       sysbox_version: ${{ env.SYSBOX_VERSION }}
     steps:
       - name: Checkout
@@ -32,7 +33,7 @@ jobs:
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
         id: semantic_release
-        if: github.event_name != 'pull_request'
+        # if: github.event_name != 'pull_request'
         with:
           dry_run: true
         env:
@@ -88,7 +89,7 @@ jobs:
         run: "packer validate ."
       - name: Run `packer build`
         id: build
-        if: always() && (github.event_name != 'pull_request')
+        if: always() && (github.event_name != 'pull_request' && needs.prepare.outputs.new_release_published == 'true')
         env:
           PKR_VAR_k8s_version: ${{ matrix.k8s_version }}
           PKR_VAR_ubuntu_version: ${{ matrix.ubuntu_version }}
