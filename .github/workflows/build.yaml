@@ -33,7 +33,6 @@ jobs:
       - name: Semantic Release
         uses: cycjimmy/semantic-release-action@v3
         id: semantic_release
-        # if: github.event_name != 'pull_request'
         with:
           dry_run: true
         env:
