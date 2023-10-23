@@ -27,7 +27,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PLURAL_BOT_PAT }}
       - name: 'Setup Node'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         if: github.event_name != 'pull_request'
         with:
           node-version: 18.12.1
@@ -116,7 +116,7 @@ jobs:
           fetch-depth: 0
           token: ${{ secrets.PLURAL_BOT_PAT }}
       - name: 'Setup Node'
-        uses: actions/setup-node@v3
+        uses: actions/setup-node@v4
         if: github.event_name != 'pull_request'
         with:
           node-version: 18.12.1
